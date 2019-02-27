@@ -5,11 +5,11 @@
   @Email: rinsa@suou.waseda.jp
   @Date: 2019-02-28 01:54:43
   @Last Modified by:   Tsukasa Nozawa
-  @Last Modified time: 2019-02-28 04:57:46
+  @Last Modified time: 2019-02-28 05:08:23
  ----------------------------------------------------
 
   Usage:
-   python main.py argvs[1]
+   python main.py argvs[1] argvs[2] argvs[3]...
   
    argvs[1]  :  normal map parh
 
