@@ -5,7 +5,7 @@
   @Email: rinsa@suou.waseda.jp
   @Date: 2019-02-28 01:54:43
   @Last Modified by:   rinsa318
-  @Last Modified time: 2019-02-28 16:30:58
+  @Last Modified time: 2019-02-28 17:24:08
  ----------------------------------------------------
 
   Usage:
@@ -82,6 +82,7 @@ def main():
   input_path = argvs[1]
   mask_path = "{0}_mask{1}".format(input_path[:-4], input_path[-4:])
   output_path = "{0}_recover.ply".format(format(input_path[:-4]))
+  window_size = int(argvs[2])
   print("input path: {}".format(input_path))
   print("mask path: {}".format(mask_path))
   print("output path: {}".format(output_path))
@@ -94,7 +95,7 @@ def main():
   normal_image = cv2.imread(input_path)
   normal_map = ((normal_image / 255.0) * 2) - 1.0
   mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
-  mask = mask2tiny(mask, 3)
+  mask = mask2tiny(mask, window_size)
   normal_map[mask == 0] = [0.0, 0.0, 0.0]
 
 
