@@ -4,8 +4,8 @@
   @Affiliation: Waseda University
   @Email: rinsa@suou.waseda.jp
   @Date: 2019-02-28 01:54:43
-  @Last Modified by:   rinsa318
-  @Last Modified time: 2019-02-28 17:24:08
+  @Last Modified by:   Tsukasa Nozawa
+  @Last Modified time: 2019-02-28 23:51:38
  ----------------------------------------------------
 
   Usage:
@@ -69,6 +69,16 @@ def mask2tiny(mask, window):
 
 
 
+def heatmap(input):
+  ''' Returns a RGB heatmap
+  :input: gray scale image --> numpy array
+  :return: cv2 image array 
+  '''
+  min = np.amin(input)
+  max = np.amax(input)
+  rescaled = 255 * ( (input - min ) / (max - min) )
+
+  return cv2.applyColorMap(rescaled.astype(np.uint8), cv2.COLORMAP_JET)
 
 
 
@@ -129,9 +139,9 @@ def main():
 
 
   ## load albedo or create favarite albedo
-  # cv2.imread(''''''')
-  temp_albedo = make_albedo(depth)
-
+  # cv2.imread('''albedp.png'''')
+  # temp_albedo = make_albedo(depth)
+  temp_albedo = heatmap(depth)/255.0
 
   ## output
   # 3D result
@@ -142,8 +152,8 @@ def main():
   normal = normal.copy()[:, :, ::-1]
   normal_restore = np.array((normal+1.0)/2.0*255, dtype=np.uint8)
   depth_image = np.array((1.0 - (depth / np.max(depth))) * 255, dtype=np.uint8 )
-  depth_image_rgb = cv2.cvtColor(depth_image, cv2.COLOR_GRAY2RGB)
-  results = np.hstack((normal_restore, depth_image_rgb))
+  depth_image = cv2.cvtColor(depth_image, cv2.COLOR_GRAY2RGB)
+  results = np.hstack((normal_restore, depth_image))
   cv2.imwrite("{0}_results.png".format(output_path[:-4]), np.array(results, dtype=np.uint8))
   cv2.imshow("results", np.array(results, dtype=np.uint8))
   cv2.waitKey(0)
