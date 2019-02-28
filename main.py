@@ -4,8 +4,8 @@
   @Affiliation: Waseda University
   @Email: rinsa@suou.waseda.jp
   @Date: 2019-02-28 01:54:43
-  @Last Modified by:   Tsukasa Nozawa
-  @Last Modified time: 2019-02-28 05:08:23
+  @Last Modified by:   rinsa318
+  @Last Modified time: 2019-02-28 16:30:58
  ----------------------------------------------------
 
   Usage:
@@ -26,13 +26,16 @@ import obj_functions as ob
 
 
 
-def normalize(normal):
+def normalize(normal, mask):
 
   n = np.zeros(normal.shape)
 
   for i in range(normal.shape[0]):
     for j in range(normal.shape[1]):
-      # print(i)
+      
+      if(mask[i][j] == 0):
+        continue
+        
       norm = np.linalg.norm(normal[i][j])
       n[i][j] = normal[i][j] / norm
 
@@ -107,7 +110,7 @@ def main():
   ################
   ## 4. normalize
   ################
-  n = normalize(normal)
+  n = normalize(normal, mask)
 
 
 
