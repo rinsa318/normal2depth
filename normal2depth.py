@@ -15,7 +15,6 @@
 import numpy as np
 import scipy.sparse as sp
 import scipy.sparse.linalg
-import matplotlib.pyplot as plt
 import cv2
 import sys
 import os
