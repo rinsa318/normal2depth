@@ -4,8 +4,8 @@
   @Affiliation: Waseda University
   @Email: rinsa@suou.waseda.jp
   @Date: 2019-02-28 01:53:06
-  @Last Modified by:   Tsukasa Nozawa
-  @Last Modified time: 2019-02-28 04:58:29
+  @Last Modified by:   rinsa318
+  @Last Modified time: 2019-04-05 17:51:54
  ----------------------------------------------------
 
 
@@ -55,6 +55,7 @@ def comp_depth(mask, normal):
 
 
   ## 1. prepare matrix for least square
+  print("prepare matrix for least square: Ax = b")
   A = sp.lil_matrix((mask.size * 2, mask.size))
   b = np.zeros(A.shape[0], dtype=np.float32)
 
@@ -78,6 +79,8 @@ def comp_depth(mask, normal):
   w = mask.shape[1]
   h = mask.shape[0]
   for i in range(mask.shape[0]):
+    progress_bar(i, mask.shape[0] -1)
+
     for j in range(mask.shape[1]):
       # print(i)
       ## current pixel om matrix
@@ -97,6 +100,7 @@ def comp_depth(mask, normal):
 
 
   ## 5. solve Ax = b
+  print("\nsoloving Ax = b ...")
   AtA = A.transpose().dot(A)
   Atb = A.transpose().dot(b)
   x, info = sp.linalg.cg(AtA, Atb)
@@ -131,7 +135,13 @@ def comp_depth_4edge(mask, normal):
   Also dot(Np, v2) is same #up
   --> Z(x,y+1) - Z(x, y) = -ny/nz = q
 
+  Also dot(Np, v3) is same #left
+  --> Z(x-1,y) - Z(x, y) = -nx/nz = q
+
+  Also dot(Np, v4) is same #bottom
+  --> Z(x,y-1) - Z(x, y) = -ny/nz = q
   
+
   Finally, apply least square to find Z(x, y).
   A: round matrix
   x: matrix of Z(x, y)
@@ -140,12 +150,12 @@ def comp_depth_4edge(mask, normal):
   A*x = b
 
 
-  (--> might be left bottom as well???)
 
   '''
 
 
   ## 1. prepare matrix for least square
+  print("prepare matrix for least square: Ax = b")
   A = sp.lil_matrix((mask.size * 4, mask.size))
   b = np.zeros(A.shape[0], dtype=np.float32)
 
@@ -170,6 +180,8 @@ def comp_depth_4edge(mask, normal):
   w = mask.shape[1]
   h = mask.shape[0]
   for i in range(mask.shape[0]):
+    progress_bar(i, mask.shape[0] -1)
+
     for j in range(mask.shape[1]):
 
       ## current pixel om matrix
@@ -199,6 +211,7 @@ def comp_depth_4edge(mask, normal):
 
 
   ## 5. solve Ax = b
+  print("\nsoloving Ax = b ...")
   AtA = A.transpose().dot(A)
   Atb = A.transpose().dot(b)
   x, info = sp.linalg.cg(AtA, Atb)
@@ -210,3 +223,19 @@ def comp_depth_4edge(mask, normal):
   depth[mask == 0] = 0.0
 
   return depth
+
+
+def progress_bar(n, N):
+
+  '''
+  print current progress
+  '''
+
+  step = 2
+  percent = float(n) / float(N) * 100
+
+  ## convert percent to bar
+  current = "#" * int(percent//step)
+  remain = " " * int(100/step-int(percent//step))
+  bar = "|{}{}|".format(current, remain)
+  print("\r{}:{:3.0f}[%]".format(bar, percent), end="", flush=True)

@@ -4,14 +4,15 @@
   @Affiliation: Waseda University
   @Email: rinsa@suou.waseda.jp
   @Date: 2019-02-28 01:54:43
-  @Last Modified by:   Tsukasa Nozawa
-  @Last Modified time: 2019-02-28 23:51:38
+  @Last Modified by:   rinsa318
+  @Last Modified time: 2019-04-05 17:59:02
  ----------------------------------------------------
 
   Usage:
-   python main.py argvs[1] argvs[2] argvs[3]...
+   python main.py argvs[1] argvs[2]
   
    argvs[1]  :  normal map parh
+   argvs[1]  :  mask path
 
 
 """
@@ -43,29 +44,29 @@ def normalize(normal, mask):
 
 
 
-def make_albedo(depth):
+# def make_albedo(depth):
 
-  albedo = np.zeros((depth.shape[0], depth.shape[1], 3), dtype=np.float32)
-  albedo[:, :, 0] = 0.5
-  albedo[:, :, 1] = 0.5
-  albedo[:, :, 2] = 0.5
-
-
-  return albedo
+#   albedo = np.zeros((depth.shape[0], depth.shape[1], 3), dtype=np.float32)
+#   albedo[:, :, 0] = 0.5
+#   albedo[:, :, 1] = 0.5
+#   albedo[:, :, 2] = 0.5
 
 
+#   return albedo
 
-def mask2tiny(mask, window):
 
-  '''
-  naive approach to remove noise around border
-  '''
 
-  # mask
-  mask = np.array(mask, dtype=np.uint8)
-  eroded = cv2.erode(mask, np.ones((int(window), int(window)), np.uint8)) # 0~1
+# def mask2tiny(mask, window):
 
-  return eroded
+#   '''
+#   naive approach to remove noise around border
+#   '''
+
+#   # mask
+#   mask = np.array(mask, dtype=np.uint8)
+#   eroded = cv2.erode(mask, np.ones((int(window), int(window)), np.uint8)) # 0~1
+
+#   return eroded
 
 
 
@@ -90,12 +91,12 @@ def main():
   ################
   argvs = sys.argv
   input_path = argvs[1]
-  mask_path = "{0}_mask{1}".format(input_path[:-4], input_path[-4:])
+  mask_path = argvs[2]
   output_path = "{0}_recover.ply".format(format(input_path[:-4]))
-  window_size = int(argvs[2])
+  # window_size = int(argvs[2])
   print("input path: {}".format(input_path))
   print("mask path: {}".format(mask_path))
-  print("output path: {}".format(output_path))
+  print("output path: {}\n".format(output_path))
 
 
 
@@ -105,7 +106,7 @@ def main():
   normal_image = cv2.imread(input_path)
   normal_map = ((normal_image / 255.0) * 2) - 1.0
   mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
-  mask = mask2tiny(mask, window_size)
+  # mask = mask2tiny(mask, window_size)
   normal_map[mask == 0] = [0.0, 0.0, 0.0]
 
 
@@ -132,6 +133,7 @@ def main():
 
   ## compute depth
   depth = normal2depth.comp_depth_4edge(mask, normal)
+  print("done!")
 
 
   ## convert depth to ver and tri
