@@ -5,7 +5,7 @@
   @Email: rinsa@suou.waseda.jp
   @Date: 2019-02-28 01:53:06
   @Last Modified by:   rinsa318
-  @Last Modified time: 2019-04-05 17:51:54
+  @Last Modified time: 2019-04-09 11:02:01
  ----------------------------------------------------
 
 
@@ -225,6 +225,7 @@ def comp_depth_4edge(mask, normal):
   return depth
 
 
+
 def progress_bar(n, N):
 
   '''
@@ -239,3 +240,23 @@ def progress_bar(n, N):
   remain = " " * int(100/step-int(percent//step))
   bar = "|{}{}|".format(current, remain)
   print("\r{}:{:3.0f}[%]".format(bar, percent), end="", flush=True)
+
+
+
+# def progress_bar(n, N):
+
+#   '''
+#   print current progress
+#   '''
+
+#   step = 2
+#   percent = float(n) / float(N) * 100
+#   per_int = int(percent//step)
+#   per_dec = percent/step - per_int
+
+#   ## convert percent to bar
+#   status = ['#', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+#   current = "#" * per_int + status[int(per_dec*10)]
+#   remain = " " * int(100/step - per_int)
+#   bar = "|{}{}|".format(current, remain)
+#   print("\r{}:{:3.0f}[%]".format(bar, percent), end="", flush=True)
