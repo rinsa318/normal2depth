@@ -4,8 +4,6 @@
   @Affiliation: Waseda University
   @Email: rinsa@suou.waseda.jp
   @Date: 2019-02-28 01:53:06
-  @Last Modified by:   rinsa318
-  @Last Modified time: 2019-04-09 11:02:01
  ----------------------------------------------------
 
 
@@ -47,9 +45,6 @@ def comp_depth(mask, normal):
   b: matrix of p and q 
 
   A*x = b
-
-
-  (--> might be left bottom as well???)
 
   '''
 
@@ -172,7 +167,7 @@ def comp_depth_4edge(mask, normal):
   b[0:nx.shape[0]]               = -nx/(nz+1e-8)
   b[nx.shape[0]:2*nx.shape[0]]   = -ny/(nz+1e-8)
   b[2*nx.shape[0]:3*nx.shape[0]] = -nx/(nz+1e-8)
-  b[3*nx.shape[0]:b.shape[0]]    = -ny/(nz+1e-8)
+  b[3*nx.shape[0]:]    = -ny/(nz+1e-8)
   
 
   ## 4. fill A 

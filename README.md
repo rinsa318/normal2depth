@@ -7,7 +7,7 @@ Estimate depth from surface normal
 
 ## Environment
 Ubuntu 18.04  
-Python3.6(Anaconda3-5.2.0)
+Python3.8
 
 
 
@@ -18,6 +18,7 @@ Python3.6(Anaconda3-5.2.0)
 + sys
 + os
 + scipy
++ argparse
 
 
 
@@ -28,11 +29,11 @@ Python3.6(Anaconda3-5.2.0)
 
 
 ```
-python main.py argvs[1] argvs[2]
+python main.py
 
--->
-argvs[1]  :  path to normal image
-argvs[2]  :  path to mask for image 
-
+optional arguments:
+  -h, --help     show this help message and exit
+  -i , --input   path to normal map image(OpenGL style)
+  -m , --mask    path to mask image(optional)
 ```
 
